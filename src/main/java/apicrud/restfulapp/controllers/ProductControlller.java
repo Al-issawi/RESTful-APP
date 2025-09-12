@@ -15,7 +15,6 @@ import java.util.Optional;
 @RequestMapping("/api/products")
 public class ProductControlller {
 
-    // TODO update product,
 
         @Autowired
        private ProductService productService;
