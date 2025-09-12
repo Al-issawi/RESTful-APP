@@ -48,23 +48,23 @@ public class ProductControlller {
         /** Update product **/
         @PutMapping("/id")
         public  ResponseEntity<Products> update(@PathVariable Long id,@RequestBody Products product){
-
+            product.setId(id);
             return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
         }
 
 
         /**Delete Product**/
 
-    @DeleteMapping ("/id")
-    public ResponseEntity<?> delete (@PathVariable Long id){
+        @DeleteMapping ("/id")
+        public ResponseEntity<?> delete (@PathVariable Long id){
 
-            Products product = new Products();
-            product.setId(id);
-        Optional<Products> productsOptional = productService.delete(product);
+                Products product = new Products();
+                product.setId(id);
+            Optional<Products> productsOptional = productService.delete(product);
 
-        if(productsOptional.isPresent()){
-            return ResponseEntity.ok(productsOptional.orElseThrow());
+            if(productsOptional.isPresent()){
+                return ResponseEntity.ok(productsOptional.orElseThrow());
+            }
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
-    }
     }
