@@ -2,7 +2,6 @@ package apicrud.restfulapp.controllers;
 
 import apicrud.restfulapp.entity.Products;
 import apicrud.restfulapp.services.ProductService;
-import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +26,7 @@ public class ProductControlller {
 
         /** Git by ID Products **/
         //get products by ID.
-        @GetMapping("/id")
+        @GetMapping("/{id}")
        public ResponseEntity<?> view (@PathVariable Long id){
             Optional<Products> productsOptional = productService.findById(id);
 
@@ -46,7 +45,7 @@ public class ProductControlller {
         }
 
         /** Update product **/
-        @PutMapping("/id")
+        @PutMapping("/{id}")
         public  ResponseEntity<Products> update(@PathVariable Long id,@RequestBody Products product){
             product.setId(id);
             return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
@@ -55,7 +54,7 @@ public class ProductControlller {
 
         /**Delete Product**/
 
-        @DeleteMapping ("/id")
+        @DeleteMapping ("/{id}")
         public ResponseEntity<?> delete (@PathVariable Long id){
 
                 Products product = new Products();
