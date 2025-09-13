@@ -2,7 +2,6 @@ package apicrud.restfulapp.controllers;
 
 import apicrud.restfulapp.entity.Products;
 import apicrud.restfulapp.services.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,15 +11,19 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/products")
-public class ProductControlller {
+public class ProductController {
 
+    private final ProductService productService;
 
-        @Autowired
-       private ProductService productService;
+    //injecting ProductService.
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
-        /** get all products **/
+    /** get all products **/
         @GetMapping
         public List<Products> list(){
+
             return productService.findAll();
         }
 
@@ -48,7 +51,8 @@ public class ProductControlller {
         @PutMapping("/{id}")
         public  ResponseEntity<Products> update(@PathVariable Long id,@RequestBody Products product){
             product.setId(id);
-            return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(productService.save(product));
         }
 
 
