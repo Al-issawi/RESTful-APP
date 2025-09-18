@@ -1,6 +1,7 @@
 package apicrud.restfulapp.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "products")
@@ -10,8 +11,16 @@ public class Products {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty(message = "{NotEmpty.product.name}")
+    @Size(min =3,max =20 )
     private String name;
+    
+    @NotNull (message = "{NotNull.product.price}")
+    @Min(value = 500, message = "{Min.product.price}")
     private int price;
+
+
+    @NotBlank(message = "{NotBlank.product.description}")
     private String descriptions;
 
 

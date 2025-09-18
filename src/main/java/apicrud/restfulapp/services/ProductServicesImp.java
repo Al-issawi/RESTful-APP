@@ -1,8 +1,8 @@
 package apicrud.restfulapp.services;
 
-
 import apicrud.restfulapp.entity.Products;
 import apicrud.restfulapp.repository.ProductsRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,13 +38,33 @@ public class ProductServicesImp implements ProductService {
 
     @Transactional
     @Override
-    public Optional <Products> delete(Products product) {
+    public Optional<Products> update(Long id, Products product) {
 
-       Optional <Products> productOptional = repository.findById(product.getId());
+        Optional <Products> productOptional = repository.findById(id);
 
-        productOptional.ifPresent(prodDB ->
-                {repository.delete(product);}
-        );
+        if(productOptional.isPresent())
+        {
+            Products prodDB = productOptional.orElseThrow();
+            prodDB.setName(product.getName());
+            prodDB.setPrice(product.getPrice());
+            prodDB.setDescriptions(product.getDescriptions());
+
+            return Optional.of(repository.save(prodDB));
+        }
+
+        return productOptional;
+    }
+
+
+    @Transactional
+    @Override
+    public Optional <Products> delete(Long id) {
+
+       Optional <Products> productOptional = repository.findById(id);
+            productOptional.ifPresent(prodDB ->
+            {
+            repository.delete(prodDB);
+            });
 
         return productOptional;
     }
