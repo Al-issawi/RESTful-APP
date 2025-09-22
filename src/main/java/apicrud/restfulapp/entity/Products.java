@@ -1,5 +1,7 @@
 package apicrud.restfulapp.entity;
 
+import apicrud.restfulapp.validations.IsExistsDB;
+import apicrud.restfulapp.validations.IsRequired;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -11,17 +13,22 @@ public class Products {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "{NotEmpty.product.name}")
+    @IsRequired(message = "{required.product.name}")
     @Size(min =3,max =20 )
     private String name;
     
     @NotNull (message = "{NotNull.product.price}")
     @Min(value = 500, message = "{Min.product.price}")
-    private int price;
+    private Double price;
 
 
-    @NotBlank(message = "{NotBlank.product.description}")
+    @IsRequired(message = "{required.product.description}")
     private String descriptions;
+
+    @IsRequired
+    @IsExistsDB
+    private String test;
+
 
 
     //getters
@@ -34,12 +41,16 @@ public class Products {
         return name;
     }
 
-    public int getPrice() {
+    public Double getPrice() {
         return price;
     }
 
     public String getDescriptions() {
         return descriptions;
+    }
+
+    public String getTest() {
+        return test;
     }
 
     //****setters****//
@@ -53,11 +64,15 @@ public class Products {
         this.name = name;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
     public void setDescriptions(String descriptions) {
         this.descriptions = descriptions;
+    }
+
+    public void setTest(String test) {
+        this.test = test;
     }
 }

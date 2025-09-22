@@ -3,6 +3,7 @@ package apicrud.restfulapp.services;
 import apicrud.restfulapp.entity.Products;
 import apicrud.restfulapp.repository.ProductsRepository;
 
+import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +49,7 @@ public class ProductServicesImp implements ProductService {
             prodDB.setName(product.getName());
             prodDB.setPrice(product.getPrice());
             prodDB.setDescriptions(product.getDescriptions());
+            prodDB.setTest(product.getTest());
 
             return Optional.of(repository.save(prodDB));
         }
@@ -68,4 +70,15 @@ public class ProductServicesImp implements ProductService {
 
         return productOptional;
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public boolean existsByTest(String test) {
+
+        return repository.existsByTest(test);
+    }
+
+
+
+
 }

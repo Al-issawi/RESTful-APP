@@ -1,9 +1,9 @@
 package apicrud.restfulapp.controllers;
 
+//import apicrud.restfulapp.validations.ProductValidation;
 import apicrud.restfulapp.entity.Products;
 import apicrud.restfulapp.services.ProductService;
 import jakarta.validation.Valid;
-import org.apache.el.util.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,18 +15,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
 
 
         @Autowired
-       private ProductService productService;
+        private ProductService productService;
+
+
+        /*
+        @Autowired
+        private ProductValidation validation;
+        */
 
         /** get all products **/
         @GetMapping
         public List<Products> list(){
-
             return productService.findAll();
         }
 
@@ -47,8 +53,9 @@ public class ProductController {
         @PostMapping
         public ResponseEntity<?> create (@Valid @RequestBody Products product, BindingResult bindingResult){
 
-            if(bindingResult.hasFieldErrors()){
+            // validation.validate(product, bindingResult);
 
+            if(bindingResult.hasFieldErrors()){
                 return  Validation(bindingResult);
             }
 
@@ -58,6 +65,8 @@ public class ProductController {
         /** Update product **/
         @PutMapping("/{id}")
         public  ResponseEntity<?> update(@Valid @RequestBody Products product,BindingResult bindingResult,@PathVariable Long id){
+
+           //validation.validate(product, bindingResult);
 
             if(bindingResult.hasFieldErrors()){
 
@@ -91,7 +100,7 @@ public class ProductController {
         //validation
         private ResponseEntity<?> Validation (BindingResult bindingResult) {
 
-            Map<String, String> errors = new HashMap();
+            Map<String, String> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(err ->{
                 errors.put(err.getField()," "+err.getField()+ " "+ err.getDefaultMessage());
             });
